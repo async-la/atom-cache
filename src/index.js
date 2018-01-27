@@ -35,7 +35,6 @@ export function createAtom<A>({
     if (!_atom) {
       if (init) _atom = init()
       if (initAsync) _atom = await initAsync()
-      console.log('SET', _atom, key)
       storage &&
         (await storage.setItem(key, serialize ? serialize(_atom) : _atom))
     }

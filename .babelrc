@@ -1,20 +1,19 @@
 {
-    "presets": [
-      "flow",
-      ["env", {
-        "useBuiltIns": true,
-        "modules": false,
-        "targets": {
-          "browsers": ["last 2 versions"]
-        }
-      }]
-    ],
-    "env": {
-      "commonjs": {
-        "plugins": [
-          ["transform-es2015-modules-commonjs", { "loose": true }]
-        ]
+  "presets": [
+    "flow",
+    ["env", {
+      "useBuiltIns": true,
+      "modules": false,
+      "targets": {
+        "browsers": ["last 2 versions"]
       }
+    }]
+  ],
+  "env": {
+    "commonjs": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs", { "loose": true }]
+      ]
     }
   }
-  
+}
