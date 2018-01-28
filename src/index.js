@@ -30,7 +30,7 @@ export function createAtom<A>({
     if (_atom) return _atom
     if (storage) {
       let stored = await storage.getItem(key)
-      _atom = deserialize ? deserialize(stored) : stored
+      if (stored) _atom = deserialize ? deserialize(stored) : stored
     }
     if (!_atom) {
       if (init) _atom = init()
