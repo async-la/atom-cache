@@ -5,7 +5,11 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "repository": "rt2zz/storage-memory",
-  "files": ["es", "src", "lib"],
+  "files": [
+    "es",
+    "src",
+    "lib"
+  ],
   "scripts": {
     "build": "npm run flow-copy && npm run build:commonjs && npm run build:es",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
