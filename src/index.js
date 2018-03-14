@@ -30,9 +30,9 @@ export function createAtom<A>({
 }: AtomConfig<A>): AtomCache<A> {
   if (stringify && !serialize) serialize = JSON.stringify
   if (stringify && !deserialize) deserialize = JSON.parse
-  let _atom = null
+  let _atom = undefined
   let get = async () => {
-    if (_atom) return _atom
+    if (_atom !== undefined) return _atom
     if (storage) {
       let stored = await storage.getItem(key)
       if (stored) _atom = deserialize ? deserialize(stored) : stored
@@ -62,7 +62,7 @@ export function createAtom<A>({
     return
   }
   const reset = () => {
-    _atom = null
+    _atom = undefined
     return storage && storage.removeItem(key)
   }
   return {
