@@ -9,6 +9,7 @@ type AtomConfig<A> = {
   storage?: Storage,
   init?: () => A,
   initAsync?: () => Promise<A>,
+  stringify?: boolean,
   serialize?: any => string,
   deserialize?: string => any,
 }
@@ -23,9 +24,12 @@ export function createAtom<A>({
   key,
   init,
   initAsync,
+  stringify,
   serialize,
   deserialize,
 }: AtomConfig<A>): AtomCache<A> {
+  if (stringify && !serialize) serialize = JSON.stringify
+  if (stringify && !deserialize) deserialize = JSON.parse
   let _atom = null
   let get = async () => {
     if (_atom) return _atom
@@ -36,8 +40,11 @@ export function createAtom<A>({
     if (!_atom) {
       if (init) _atom = init()
       if (initAsync) _atom = await initAsync()
+      if (process.env.NODE_ENV !== 'production' && !_atom && !serialize)
+        console.log(
+          'atom-cache: warning, _atom is falsy, and many storage engines will choke on falsy values'
+        )
       storage &&
-        _atom &&
         (await storage.setItem(key, serialize ? serialize(_atom) : _atom))
     }
     if (!_atom)
@@ -50,9 +57,7 @@ export function createAtom<A>({
     _atom = value
     if (storage) {
       let serialized = serialize ? serialize(_atom) : _atom
-      return serialized
-        ? await storage.setItem(key, serialized)
-        : await storage.removeItem(key, serialized)
+      return await storage.setItem(key, serialized)
     }
     return
   }
