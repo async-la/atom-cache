@@ -37,7 +37,7 @@ test('first get returns result of init if nothing is in storage', async (t) => {
     let atom = createAtom({
         key: 'foo',
         storage,
-        initAsync: async () => 'baz'
+        init: async () => 'baz'
     })
   
     let value = await atom.get()
