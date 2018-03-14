@@ -16,6 +16,7 @@ type AtomConfig<A> = {
 export type AtomCache<A> = {
   get: () => Promise<A>,
   reset: () => Promise<void>,
+  set: () => Promise<void>,
 }
 export function createAtom<A>({
   storage,
@@ -44,12 +45,20 @@ export function createAtom<A>({
       )
     else return _atom
   }
+  let set = async value => {
+    _atom = value
+    if (storage) {
+      await storage.setItem(key, serialize ? serialize(_atom) : _atom)
+    }
+    return
+  }
   const reset = async () => {
     _atom = null
-    storage && storage.removeItem(key)
+    return storage && storage.removeItem(key)
   }
   return {
     get,
     reset,
+    set,
   }
 }
