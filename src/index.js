@@ -16,7 +16,7 @@ type AtomConfig<A> = {
 export type AtomCache<A> = {
   get: () => Promise<A>,
   reset: () => Promise<void>,
-  set: () => Promise<void>,
+  set: A => Promise<void>,
 }
 export function createAtom<A>({
   storage,
